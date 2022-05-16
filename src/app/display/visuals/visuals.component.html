@@ -1,0 +1,10 @@
+<div class="container">
+<app-visual-list></app-visual-list>
+
+<div class="chartcontain">
+ <svg [@chartAnimation]="state" (@chartAnimation.done)="animationEnded($event)"  width="400" height="400" class="circle">
+        <circle cx="200" cy="200" r="102"></circle>>
+    </svg>   
+<div   #pieChart id="pieChart"></div>
+</div>
+</div>

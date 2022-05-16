@@ -1,0 +1,20 @@
+.container {
+    margin:  0 auto;
+    width: 95%;
+    height: 465px;
+    background-color: var(--bgcolor);
+    border-radius: 10px;
+     border: 5px double #113A63;
+    box-shadow: 0px 0px 7px 5px #0e3155;
+    position: relative;
+    overflow: hidden;
+    padding: 10px;
+}
+
+select {
+    position: absolute;
+    top: 50px;
+   right: 70px;
+    z-index: 2;
+    padding: 5px;
+}

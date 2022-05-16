@@ -1,0 +1,13 @@
+
+
+<ul class="nav ">
+  <li class="nav-item home pull-left"><a routerLink="../">Home</a></li>
+<li class="nav-item selected">{{selected}}</li>
+  <li class="nav-item pull-right info" appDropdown>
+    Select Plant:
+    <br>
+      <select name="plantSelect" id="plantSelect"  #plantSelect (change)="onPlantSelected(plantSelect.value)">   
+       <option *ngFor="let prop of plant" >{{prop.name}}</option>
+  </select>  
+  </li>
+</ul>

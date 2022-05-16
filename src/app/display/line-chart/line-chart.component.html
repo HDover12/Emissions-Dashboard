@@ -1,0 +1,7 @@
+<select name="boilerSelect" id="boilerSelect" #boilerSelect (change)="onBoilerSelect(boilerSelect.value)">
+
+    <option *ngFor="let boiler of boilerArray" >{{boiler.name}}</option>
+</select>
+<div class="container">
+    <div #lineChart id="lineChart"></div>
+</div>

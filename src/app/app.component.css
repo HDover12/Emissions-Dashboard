@@ -1,0 +1,22 @@
+
+
+.container {
+  background-color: #1C4E80;
+    margin: 0 auto;
+    width: 90%;
+    height: fit-content;
+    border: solid black 7px;
+    padding-bottom: 100px;
+  
+}
+
+#display {
+    margin: 20px 40px 0 40px;
+}
+
+#header {
+    background-color: #20262c;
+border-bottom: solid 2px black;
+   position: relative;
+   box-shadow: 1px 1px 5px 3px black;
+}
