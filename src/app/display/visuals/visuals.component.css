@@ -8,18 +8,20 @@
     box-shadow: 0px 0px 7px 5px #0e3155;
     position: relative;
     overflow: hidden;
+    z-index: 1;
 
 }
 
 .chartcontain {
 width: 450px;
-left: 50%;
+left: 43%;
    overflow: hidden;
    position: absolute;
    transform: translate(-50%, 0%);
   height: 450px;
- top: -28px;
+ top: -48px;
  background-color: transparent;
+z-index: 1;
 }
 
 .circle {

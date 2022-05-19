@@ -36,35 +36,55 @@ import { animate, state, style, transition, trigger, keyframes } from '@angular/
 export class VisualsComponent implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
-    private plotlyService: PlotlyService
+    private plotlyService: PlotlyService,
+    private globaleColors: GlobalColors
   ) {}
   natGas: number = 0;
   coal: number = 0;
   state = 'hidden';
   chartState = 'start';
-  bgcolor = GlobalColors.componentbgcolor;
-  coalcolor = GlobalColors.coalcolor;
-  naturalgascolor = GlobalColors.natuarlgascolor;
+  bgcolor = GlobalColors.colormode.componentbgcolor;
+  coalcolor = GlobalColors.colormode.coalcolor;
+  naturalgascolor = GlobalColors.colormode.naturalgascolor;
+  fontcolor = GlobalColors.colormode.fontcolor;
+  selectedAnalyte = '';
 
   @ViewChild('pieChart', { static: false }) pieChart!: ElementRef;
+  @ViewChild('circle', { static: false }) circle!: ElementRef;
+  @ViewChild('container', { static: false }) container!: ElementRef;
 
   private plantSelected!: Subscription;
   private analyteSelected!: Subscription;
+  private colorSelected!: Subscription;
 
   animationEnded(event: any) {}
 
   ngOnInit(): void {
-
+    this.colorSelected = this.globaleColors.colorSelected.subscribe(() => {
+      setTimeout(() => {
+        this.bgcolor = GlobalColors.colormode.chartbgcolor;
+        this.coalcolor = GlobalColors.colormode.coalcolor;
+        this.naturalgascolor = GlobalColors.colormode.naturalgascolor;
+        this.fontcolor = GlobalColors.colormode.fontcolor;
+        
+        this.drawChart(
+          this.bgcolor,
+          this.coalcolor,
+          this.naturalgascolor,
+          this.fontcolor
+        );
+      }, 0);
+    });
 
     this.analyteSelected = this.dataService.analyteSelected.subscribe(
       (didActivate) => {
-
-        this.drawChart(didActivate);
+        this.onBoilerSelected(didActivate);
       }
     );
   }
 
-  drawChart(selectedanalyte: string) {
+  onBoilerSelected(selectedanalyte: string) {
+    this.selectedAnalyte = selectedanalyte;
     if (selectedanalyte == 'NOx') {
       this.natGas = this.dataService.noxNatGas;
       this.coal = this.dataService.noxCoal;
@@ -87,12 +107,23 @@ export class VisualsComponent implements OnInit, OnDestroy {
       ? (this.chartState = 'stop')
       : (this.chartState = 'start');
 
-    var naturalGas = this.natGas;
-    var coal = this.coal;
+    this.drawChart(
+      this.bgcolor,
+      this.coalcolor,
+      this.naturalgascolor,
+      this.fontcolor
+    );
+  }
 
+  drawChart(
+    bgcolor: string,
+    coalcolor: string,
+    naturalgascolor: string,
+    fontcolor: string
+  ) {
     var data = [
       {
-        values: [coal, naturalGas],
+        values: [this.coal, this.natGas],
         labels: ['Coal', 'Natural Gas'],
 
         name: 'Energy Consumption Profile',
@@ -103,7 +134,7 @@ export class VisualsComponent implements OnInit, OnDestroy {
         textposition: 'outside',
         textinfo: `label+percent`,
         marker: {
-          colors: [this.coalcolor, this.naturalgascolor],
+          colors: [coalcolor, naturalgascolor],
           line: { color: '#113A63', width: '2' },
         },
         sort: false,
@@ -111,6 +142,9 @@ export class VisualsComponent implements OnInit, OnDestroy {
     ];
 
     var layout = {
+      font: {
+        color: fontcolor,
+      },
       plot_bgcolor: 'transparent',
       autosize: true,
       title: {
@@ -123,20 +157,26 @@ export class VisualsComponent implements OnInit, OnDestroy {
             size: 14,
           },
           showarrow: false,
-          text: `<b>2021<br>${selectedanalyte} Emissions <br>by Fuel</b>`,
+          text: `<b>2021<br>${this.selectedAnalyte} Emissions <br>by Fuel</b>`,
         },
       ],
 
       showlegend: false,
 
-      paper_bgcolor: this.bgcolor,
+      paper_bgcolor: bgcolor,
     };
     setTimeout(() => {
+     
       this.plotlyService.newPlot(this.pieChart.nativeElement, data, layout);
+      this.container.nativeElement.style.backgroundColor =
+        GlobalColors.colormode.componentbgcolor;
+      this.circle.nativeElement.style.stroke =
+        GlobalColors.colormode.componentbgcolor;
     }, 0);
   }
+
   ngOnDestroy(): void {
     this.analyteSelected.unsubscribe();
-
+    this.colorSelected.unsubscribe();
   }
 }

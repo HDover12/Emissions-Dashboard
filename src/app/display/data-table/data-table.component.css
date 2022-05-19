@@ -3,16 +3,13 @@
    width: 80%;
     height: 384px;
     text-align: center;
-    margin: 0 auto;
     padding: 18px 0 0 0;
     border-radius: 10px;
     border: 5px double #113A63;
     box-shadow: 0px 0px 7px 5px #0e3155;
     position: relative;
-    overflow-y: scroll;
-
-
- 
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .heading {
@@ -23,7 +20,8 @@
 
 table {
 padding: 10px 20px 0 20px;
-    height: 200px;
+  min-width: 690px;
+
     margin: 0 auto;
    table-layout: fixed;
    text-align: center;
@@ -31,23 +29,31 @@ padding: 10px 20px 0 20px;
    overflow: hidden;
    font-size: 18px;
 
+
+
 }
 
 th {
   text-align: center;
+ 
 }
 
 td {
       text-align: center;
       position: relative;
+ 
 }
 
 tbody {
     position: relative;
-    height: 125px
-    
+    height: 125px;
 
 }
+
+.table>tbody>tr>td, .table>tbody>tr>th {
+    border-top: none;
+}
+
 
 thead {
     position: relative;
@@ -57,6 +63,10 @@ thead {
 .total {
     font-weight: bolder;
     font-size: 20px;
+    border: ridge 4px lightgray;
+    box-shadow: 1px 0px 1px 1px lightgray;
+    margin-top: 10px;
+   
 }
 
 

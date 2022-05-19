@@ -13,23 +13,83 @@ import { GlobalColors } from 'src/app/shared/globalcolors';
 })
 export class LineChartComponent implements OnInit, OnDestroy {
   @ViewChild('lineChart', { static: false }) lineChart!: ElementRef;
-  constructor(private plotlyService: PlotlyService, private dataService: DataService) {}
-  bgcolor = GlobalColors.componentbgcolor;
-  coalcolor = GlobalColors.coalcolor;
-  naturalgascolor = GlobalColors.natuarlgascolor;
-  private plantSelected!: Subscription
-  boilerArray: Boiler[] = []
-  dataArray:number[] = []
-  
-  
-  onBoilerSelect(selection: string){
-   
+  constructor(
+    private plotlyService: PlotlyService,
+    private dataService: DataService,
+    private globalColors: GlobalColors
+  ) {}
+
+  @ViewChild('container', { static: false }) container!: ElementRef;
+
+  bgcolor = GlobalColors.colormode.componentbgcolor;
+  coalcolor = GlobalColors.colormode.coalcolor;
+  naturalgascolor = GlobalColors.colormode.naturalgascolor;
+  fontcolor = GlobalColors.colormode.fontcolor;
+  boilerSelection = '';
+
+
+  private plantSelected!: Subscription;
+  private colorSelected!: Subscription;
+
+  boilerArray: Boiler[] = [];
+  dataArray: number[] = [];
+
+  onBoilerSelect(selection: string) {
     for (let monthdata of this.boilerArray) {
-         if (selection == monthdata.name) {
-        this.dataArray = monthdata.yearData}
+      if (selection == monthdata.name) {
+        this.dataArray = monthdata.yearData;
+        this.boilerSelection = selection;
+      }
     }
-  
-   var trace2 = {
+    this.drawChart(
+      this.dataArray,
+      this.bgcolor,
+      this.coalcolor,
+      this.naturalgascolor,
+      this.fontcolor
+    );
+  }
+
+  ngOnInit(): void {
+    this.colorSelected = this.globalColors.colorSelected.subscribe(() => {
+      setTimeout(() => {
+        this.bgcolor = GlobalColors.colormode.chartbgcolor;
+        this.coalcolor = GlobalColors.colormode.coalcolor;
+        this.naturalgascolor = GlobalColors.colormode.naturalgascolor;
+        this.fontcolor = GlobalColors.colormode.fontcolor;
+    
+
+        this.drawChart(
+          this.dataArray,
+          this.bgcolor,
+          this.coalcolor,
+          this.naturalgascolor,
+          this.fontcolor
+        );
+      }, 0);
+    });
+
+    this.plantSelected = this.dataService.selectedPlant.subscribe(
+      (didActivate) => {
+        this.boilerArray = this.dataService.displayArray;
+        this.dataArray = this.boilerArray[0].yearData;
+        this.onBoilerSelect(this.boilerArray[0].name);
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.plantSelected.unsubscribe();
+    this.colorSelected.unsubscribe();
+  }
+
+  drawChart(
+    dataArray: number[],
+    bgcolor: string,
+    coalcolor: string,
+    naturalgascolor: string,
+    fontcolor: string
+  ) {
+    var trace2 = {
       x: [
         'January',
         'February',
@@ -44,22 +104,23 @@ export class LineChartComponent implements OnInit, OnDestroy {
         'November',
         'December',
       ],
-      y: this.dataArray,
+      y: dataArray,
       type: 'scatter',
       name: 'Coal',
       line: {
-        color: this.coalcolor,
+        color: coalcolor,
       },
     };
 
     var data = [trace2];
 
     var layout = {
-      paper_bgcolor: this.bgcolor,
-      plot_bgcolor: this.bgcolor,
+      font: {color: fontcolor},
+      paper_bgcolor: bgcolor,
+      plot_bgcolor: bgcolor,
       title: {
-        text: `<b>Annual NOx Emissions for ${selection}<b>`,
-        font: {size: 22}
+        text: `<b>Annual NOx Emissions for ${this.boilerSelection}<b>`,
+        font: { size: 22 },
       },
       margin: {
         autoexpand: true,
@@ -70,22 +131,22 @@ export class LineChartComponent implements OnInit, OnDestroy {
         title: `<b>Emission Rate (lb/MMBtu)<b>`,
         titlefont: {
           size: 16,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
         tickfont: {
           size: 14,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
       },
       xaxis: {
         title: `<b>2021<b>`,
         titlefont: {
           size: 16,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
         tickfont: {
           size: 14,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
       },
     };
@@ -94,20 +155,8 @@ export class LineChartComponent implements OnInit, OnDestroy {
       this.plotlyService.newPlot(this.lineChart.nativeElement, data, layout, {
         responsive: true,
       });
+          this.container.nativeElement.style.backgroundColor =
+            GlobalColors.colormode.componentbgcolor;
     }, 0);
-  }
-
-  ngOnInit(): void {
-    this.plantSelected = this.dataService.selectedPlant.subscribe((didActivate)=>{
-    
-      this.boilerArray = this.dataService.displayArray
-      this.dataArray = this.boilerArray[0].yearData
-      this.onBoilerSelect(this.boilerArray[0].name)
-        })
-    
-
-  }
-  ngOnDestroy(): void {
-    this.plantSelected.unsubscribe()
   }
 }

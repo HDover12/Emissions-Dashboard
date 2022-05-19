@@ -1,6 +1,6 @@
 .container {
     height: 465px;
-    background-color: var(--bgcolor);
+
     width: 95%;
     text-align: center;
     padding: 10px 10px 10px 10px;
@@ -9,7 +9,7 @@
     box-shadow: 0px 0px 7px 5px #0e3155;
     position: relative;
     overflow: hidden;
- 
+  
 }
 
 .chartContain {

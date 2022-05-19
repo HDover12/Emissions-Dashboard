@@ -1,7 +1,13 @@
-
-
-<ul class="nav ">
-  <li class="nav-item home pull-left"><a routerLink="../">Home</a></li>
+<ul  class="nav ">
+  <li class="nav-item home" (click)="onNavigate($event)">Home</li>
+  <li class="nav-item color">
+    <h4>Select a color scheme:</h4>
+    <select name="colorSelect" id="colorSelect" #colorSelect (change)="onColorSelect(colorSelect.value)">
+      <option value="mainmode">Main</option>
+      <option value="darkmode">Dark</option>
+         <option value="rainbowmode">Rainbow</option>
+    </select>
+  </li>
 <li class="nav-item selected">{{selected}}</li>
   <li class="nav-item pull-right info" appDropdown>
     Select Plant:

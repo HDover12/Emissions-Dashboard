@@ -1,4 +1,32 @@
 a {
 z-index: 2;
 cursor: pointer;
+
 }
+
+.container {
+    width: 100%;
+margin: 0;
+position: relative;
+z-index: 2;
+text-align: center;
+}
+
+ul {
+ margin: 0 auto;
+font-size: 18px;
+    width: fit-content;
+ }
+
+li {
+    border: #113A63 2px solid;
+    margin: 6px;
+    box-shadow: 0px 0px 3px 1px darkgray;
+    border-radius: 4px;
+    text-align: center;
+}
+
+h4 {
+    font-weight: bolder;
+}
+

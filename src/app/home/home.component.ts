@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
         this.dataservice.selectedPlants(selection);
         this.dataservice.analyteSelected.next('NOx');
         this.dataservice.selectedPlant.next(selection);
-      }, 1);
+      }, 0);
     }
   }
 

@@ -1,6 +1,9 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../shared/data.service';
+import { GlobalColors } from '../shared/globalcolors';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +11,9 @@ import { DataService } from '../shared/data.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  constructor(private dataService: DataService) {}
+  constructor(private router: Router, private dataService: DataService, private colorselect: GlobalColors) {}
   plant = this.dataService.plants;
-  selected = this.dataService.selection
+  selected = this.dataService.selection;
   @ViewChild('plantSelect') plantSelect!: ElementRef;
   
   private plantSubscription!: Subscription; 
@@ -20,6 +23,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
    this.dataService.selectedPlant.next(event);
   this.dataService.analyteSelected.next('NOx');
  
+  }
+
+  onColorSelect(selection: string){
+    this.colorselect.colorSelected.next(selection)
+    this.colorselect.onColorSelect(selection)
+  }
+
+  onNavigate(event: any) {
+   
+     this.router.navigate(['/']);
   }
 
   ngOnInit(): void {

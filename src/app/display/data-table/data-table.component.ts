@@ -1,9 +1,10 @@
 import { animate, state, style, transition, trigger, stagger, query, keyframes } from '@angular/animations';
 import { NONE_TYPE } from '@angular/compiler';
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { Subscription } from 'rxjs';
 import { Boiler } from 'src/app/shared/boiler.model';
+import { GlobalColors } from 'src/app/shared/globalcolors';
 
 import { DataService } from '../../shared/data.service';
 import { QueryShake } from '../../shared/datatable.animation';
@@ -44,7 +45,10 @@ import { Plant } from '../../shared/plant.model';
   ],
 })
 export class DataTableComponent implements OnInit {
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private globalColors: GlobalColors
+  ) {}
   state = 'hidden';
   plant = this.dataService.plants;
   boilers = this.plant;
@@ -54,22 +58,40 @@ export class DataTableComponent implements OnInit {
   coTotal = 0;
   so2Total = 0;
   displayArray: Boiler[] = [];
+  
+
+  @ViewChild('container', { static: false }) container!: ElementRef;
+
+
 
   totalState = 'show';
 
   private emitterSubscription!: Subscription;
+  private colorSelected!: Subscription;
 
   ngOnInit(): void {
-    this.emitterSubscription = this.dataService.selectedPlant.subscribe(
-      (didActivate) => {
+    setTimeout(() => {
+    this.container.nativeElement.style.backgroundColor =
+      GlobalColors.colormode.componentbgcolor;
+    this.container.nativeElement.style.color = GlobalColors.colormode.fontcolor;
+    }, 0);
+  
+          
+    this.colorSelected = this.globalColors.colorSelected.subscribe(()=>{
+      setTimeout(() => {
+        this.container.nativeElement.style.backgroundColor =
+          GlobalColors.colormode.componentbgcolor;
+         this.container.nativeElement.style.color =
+           GlobalColors.colormode.fontcolor;
+      }, 0);
+    })
+      this.dataService.selectedPlant.subscribe((didActivate) => {
         this.totalState == 'show'
           ? (this.totalState = 'hide')
           : (this.totalState = 'show');
         setTimeout(() => {
-        
           this.displayArray = this.dataService.displayArray;
 
-        
           this.noxTotal = 0;
           this.co2Total = 0;
           this.coTotal = 0;
@@ -81,13 +103,12 @@ export class DataTableComponent implements OnInit {
             this.coTotal += prop.CO;
             this.so2Total += prop.SO2;
           }
-     
         }, 200);
-      }
-    );
+      });
   }
 
   ngOnDestroy(): void {
-    this.emitterSubscription.unsubscribe();
+   
+    this.colorSelected.unsubscribe()
   }
 }

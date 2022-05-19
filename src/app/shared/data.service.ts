@@ -6,6 +6,8 @@ export class DataService {
   analyteSelected = new Subject<string>();
   selectedPlant = new Subject<string>();
 
+
+
   totalCoal = 0;
   totalNG = 0;
   noxNatGas = 0;

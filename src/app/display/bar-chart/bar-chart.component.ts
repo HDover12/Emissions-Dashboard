@@ -12,47 +12,59 @@ import { Subscription } from 'rxjs';
 export class BarChartComponent implements OnInit, OnDestroy {
   constructor(
     private plotlyService: PlotlyService,
-    private dataService: DataService
+    private dataService: DataService,
+    private globalColors: GlobalColors
   ) {}
-  bgcolor = GlobalColors.componentbgcolor;
-  coalcolor = GlobalColors.coalcolor
-  naturalgascolor = GlobalColors.natuarlgascolor
+  bgcolor = GlobalColors.colormode.chartbgcolor;
+  coalcolor = GlobalColors.colormode.coalcolor;
+  naturalgascolor = GlobalColors.colormode.naturalgascolor;
+  fontcolor = GlobalColors.colormode.fontcolor
 
-  ngArray: number[] = []
-  coalArray: number[] = []
+  ngArray: number[] = [];
+  coalArray: number[] = [];
 
   @ViewChild('barChart', { static: false }) barChart!: ElementRef;
+  @ViewChild('container', { static: false }) container!: ElementRef;
 
   private plantSelected!: Subscription;
+  private colorSelected!: Subscription;
 
   ngOnInit(): void {
+    this.colorSelected = this.globalColors.colorSelected.subscribe(() => {
+      setTimeout(() => {
+        this.bgcolor = GlobalColors.colormode.chartbgcolor;
+        this.coalcolor = GlobalColors.colormode.coalcolor;
+        this.naturalgascolor = GlobalColors.colormode.naturalgascolor;
+        this.fontcolor = GlobalColors.colormode.fontcolor;
+           this.drawChart(this.bgcolor, this.coalcolor, this.naturalgascolor, this.fontcolor);
+      }, 0);
+    });
+
     this.plantSelected = this.dataService.selectedPlant.subscribe(
       (didActivate) => {
-             this.ngArray = [];
-             this.coalArray = [];
-       
+        this.ngArray = [];
+        this.coalArray = [];
+
         for (let prop of this.dataService.plants) {
-          if (prop.name == didActivate){
-          this.ngArray = prop.ngQuarters
-          this.coalArray = prop.coalQuarters}
+          if (prop.name == didActivate) {
+            this.ngArray = prop.ngQuarters;
+            this.coalArray = prop.coalQuarters;
+          }
         }
-  
-         this.drawChart();
+
+        this.drawChart(this.bgcolor, this.coalcolor, this.naturalgascolor, this.fontcolor);
       }
     );
   }
 
-  drawChart() {
-
-
-
+  drawChart(bgcolor: string, coalcolor: string, ngcolor: string, fontcolor: string) {
     var trace1 = {
       x: ['Q1', 'Q2', 'Q3', 'Q4'],
       y: this.ngArray,
       name: 'Natural Gas',
       type: 'bar',
       marker: {
-        color: this.naturalgascolor,
+        color: ngcolor,
       },
     };
 
@@ -62,38 +74,40 @@ export class BarChartComponent implements OnInit, OnDestroy {
       name: 'Coal',
       type: 'bar',
       marker: {
-        color: this.coalcolor,
+        color: coalcolor,
       },
     };
 
     var data = [trace1, trace2];
 
     var layout = {
-      title: {text: `<b>Cost per Fuel</b>`,
-      font: {
-        size: 22
-      }
-    },
+      title: {
+        text: `<b>Cost per Fuel</b>`,
+        font: {
+          size: 22,
+          color: fontcolor,
+        },
+      },
       yaxis: {
         title: `<b>USD (millions)<b>`,
         titlefont: {
           size: 16,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
         tickfont: {
           size: 14,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
       },
       xaxis: {
         title: `<b>2021 Quarters<b>`,
         titlefont: {
           size: 16,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
         tickfont: {
           size: 14,
-          color: 'rgb(107, 107, 107)',
+          color: fontcolor,
         },
       },
       barmode: 'stack',
@@ -101,22 +115,32 @@ export class BarChartComponent implements OnInit, OnDestroy {
       margin: {
         autoexpand: true,
         b: '50',
-
       },
       height: '400',
-
-      paper_bgcolor: this.bgcolor,
-      plot_bgcolor: this.bgcolor,
+      font: {
+        fontcolor,
+      },
+      paper_bgcolor: bgcolor,
+      plot_bgcolor: bgcolor,
+      legend: {
+        font: {
+          color: fontcolor,
+        },
+      },
     };
 
     setTimeout(() => {
       this.plotlyService.newPlot(this.barChart.nativeElement, data, layout, {
         responsive: true,
       });
+        this.container.nativeElement.style.backgroundColor =
+          GlobalColors.colormode.componentbgcolor;
+     
     }, 0);
   }
 
   ngOnDestroy(): void {
-    this.plantSelected.unsubscribe()
+    this.plantSelected.unsubscribe();
+    this.colorSelected.unsubscribe();
   }
 }
