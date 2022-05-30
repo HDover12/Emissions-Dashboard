@@ -21,12 +21,13 @@
             <td>{{prop.SO2.toFixed(3)}}</td>
             <td>{{prop.fuel}}</td>
         </tr>
-        <tr [@fade]="totalState" class="total">
+        <tr [@fade]="totalState" class="total" id="total" #total>
             <th scope="row">Total</th>
             <td>{{noxTotal.toFixed(3)}}</td>
             <td>{{co2Total.toFixed(0)}}</td>
             <td>{{coTotal.toFixed(3)}}</td>
             <td>{{so2Total.toFixed(3)}}</td>
+               <td> </td>
         </tr>
     </tbody>
     <!-- <tfoot [@fade]="totalState">

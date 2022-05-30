@@ -58,11 +58,9 @@ export class DataTableComponent implements OnInit {
   coTotal = 0;
   so2Total = 0;
   displayArray: Boiler[] = [];
-  
 
   @ViewChild('container', { static: false }) container!: ElementRef;
-
-
+  @ViewChild('total', { static: false }) total!: ElementRef;
 
   totalState = 'show';
 
@@ -71,44 +69,52 @@ export class DataTableComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-    this.container.nativeElement.style.backgroundColor =
-      GlobalColors.colormode.componentbgcolor;
-    this.container.nativeElement.style.color = GlobalColors.colormode.fontcolor;
+      this.container.nativeElement.style.backgroundColor =
+        GlobalColors.colormode.componentbgcolor;
+      this.container.nativeElement.style.color =
+        GlobalColors.colormode.fontcolor;
+        this.total.nativeElement.style.background = 
+        GlobalColors.colormode.appbgcolor
     }, 0);
-  
-          
-    this.colorSelected = this.globalColors.colorSelected.subscribe(()=>{
+
+    this.colorSelected = this.globalColors.colorSelected.subscribe((color) => {
       setTimeout(() => {
         this.container.nativeElement.style.backgroundColor =
           GlobalColors.colormode.componentbgcolor;
-         this.container.nativeElement.style.color =
-           GlobalColors.colormode.fontcolor;
-      }, 0);
-    })
-      this.dataService.selectedPlant.subscribe((didActivate) => {
-        this.totalState == 'show'
-          ? (this.totalState = 'hide')
-          : (this.totalState = 'show');
-        setTimeout(() => {
-          this.displayArray = this.dataService.displayArray;
+        this.container.nativeElement.style.color =
+          GlobalColors.colormode.fontcolor;
+           this.total.nativeElement.style.background =
+             GlobalColors.colormode.appbgcolor;
 
-          this.noxTotal = 0;
-          this.co2Total = 0;
-          this.coTotal = 0;
-          this.so2Total = 0;
-          this.selectedPlant = didActivate;
-          for (let prop of this.displayArray) {
-            this.noxTotal += prop.NOx;
-            this.co2Total += prop.CO2;
-            this.coTotal += prop.CO;
-            this.so2Total += prop.SO2;
-          }
-        }, 200);
-      });
+              if (color == 'rainbowmode') {
+                this.total.nativeElement.style.animation =
+                  'rainbow 20s linear infinite';
+              }
+      }, 0);
+    });
+    this.dataService.selectedPlant.subscribe((didActivate) => {
+      this.totalState == 'show'
+        ? (this.totalState = 'hide')
+        : (this.totalState = 'show');
+      setTimeout(() => {
+        this.displayArray = this.dataService.displayArray;
+
+        this.noxTotal = 0;
+        this.co2Total = 0;
+        this.coTotal = 0;
+        this.so2Total = 0;
+        this.selectedPlant = didActivate;
+        for (let prop of this.displayArray) {
+          this.noxTotal += prop.NOx;
+          this.co2Total += prop.CO2;
+          this.coTotal += prop.CO;
+          this.so2Total += prop.SO2;
+        }
+      }, 200);
+    });
   }
 
   ngOnDestroy(): void {
-   
-    this.colorSelected.unsubscribe()
+    this.colorSelected.unsubscribe();
   }
 }

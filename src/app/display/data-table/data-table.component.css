@@ -27,7 +27,7 @@ padding: 10px 20px 0 20px;
    text-align: center;
    width: fit-content;
    overflow: hidden;
-   font-size: 18px;
+   font-size: 16px;
 
 
 
@@ -62,10 +62,10 @@ thead {
 
 .total {
     font-weight: bolder;
-    font-size: 20px;
-    border: ridge 4px lightgray;
-    box-shadow: 1px 0px 1px 1px lightgray;
-    margin-top: 10px;
+    font-size: 18px;
+    border: solid 3px black;
+    box-shadow: 0px 0px 7px 2px lightgray;
+    color: white
    
 }
 
@@ -77,3 +77,8 @@ position: sticky;
 
 }
 
+@keyframes rainbow {
+   0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}

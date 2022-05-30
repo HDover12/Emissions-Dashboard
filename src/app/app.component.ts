@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { DataService } from './shared/data.service';
 import { GlobalColors } from './shared/globalcolors';
 
@@ -22,12 +23,17 @@ constructor(private colorSelect: GlobalColors){}
   private globalcolors!: Subscription;
 
   ngAfterViewInit(): void {
-    this.container.nativeElement.style.backgroundColor =
+    this.container.nativeElement.style.background =
       GlobalColors.colormode.appbgcolor;
-this.globalcolors = this.colorSelect.colorSelected.subscribe(()=>{
+this.globalcolors = this.colorSelect.colorSelected.subscribe((color)=>{
   setTimeout(() => {
-    this.container.nativeElement.style.backgroundColor =
+    console.log(color);
+    this.container.nativeElement.style.background =
       GlobalColors.colormode.appbgcolor;
+      if(color == "rainbowmode"){
+        this.container.nativeElement.style.animation = 
+        "rainbow 20s linear infinite"
+      }
   }, 0);
 })
    

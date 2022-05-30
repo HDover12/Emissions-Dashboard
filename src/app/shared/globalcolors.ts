@@ -39,11 +39,12 @@ export class GlobalColors {
     };
 
        var rainbowmode = {
-         chartbgcolor: '#f8fe85',
-         coalcolor: '#ff6464',
-         naturalgascolor: '#ffbd67',
-         appbgcolor: '#5be7a9',
-         componentbgcolor: '#f8fe85',
+         chartbgcolor: '#fcffbc',
+         coalcolor: '#ff1493',
+         naturalgascolor: '#0000ff',
+         appbgcolor:
+           'linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3) 0%/1800% no-repeat',
+         componentbgcolor: '#fcffbc',
          fontcolor: 'black',
        };
 
