@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fadeInAnimation } from '../shared/router-animations';
 
 @Component({
@@ -10,9 +11,10 @@ import { fadeInAnimation } from '../shared/router-animations';
 })
 export class DisplayComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+  
   }
 
 }

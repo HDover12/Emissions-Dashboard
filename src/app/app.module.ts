@@ -24,7 +24,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'display', component: DisplayComponent},
+  {path: 'display', component: DisplayComponent, data: {url: ['display']}},
 ]
 
 @NgModule({

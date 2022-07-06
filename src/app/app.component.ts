@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { DataService } from './shared/data.service';
@@ -16,7 +16,12 @@ import { GlobalColors } from './shared/globalcolors';
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'Emissions-Dashboard';
   bgcolor =GlobalColors.colormode.appbgcolor
-constructor(private colorSelect: GlobalColors){}
+  routeUrl = false
+
+constructor(private colorSelect: GlobalColors, 
+  private route: ActivatedRoute, 
+  private router: Router){}
+
  
 
   @ViewChild('container') container!: ElementRef;
@@ -27,7 +32,7 @@ constructor(private colorSelect: GlobalColors){}
       GlobalColors.colormode.appbgcolor;
 this.globalcolors = this.colorSelect.colorSelected.subscribe((color)=>{
   setTimeout(() => {
-    console.log(color);
+
     this.container.nativeElement.style.background =
       GlobalColors.colormode.appbgcolor;
       if(color == "rainbowmode"){
@@ -37,7 +42,12 @@ this.globalcolors = this.colorSelect.colorSelected.subscribe((color)=>{
   }, 0);
 })
    
+
+
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+  
+  }
 }

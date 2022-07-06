@@ -1,6 +1,6 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../shared/data.service';
 import { GlobalColors } from '../shared/globalcolors';
@@ -11,10 +11,13 @@ import { GlobalColors } from '../shared/globalcolors';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  constructor(private router: Router, private dataService: DataService, private colorselect: GlobalColors) {}
+  constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private colorselect: GlobalColors) {}
   plant = this.dataService.plants;
   selected = this.dataService.selection;
+  routeSub!: Subscription;
+
   @ViewChild('plantSelect') plantSelect!: ElementRef;
+  @ViewChild('ul') hide!: ElementRef;
   
   private plantSubscription!: Subscription; 
 
@@ -22,6 +25,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   this.dataService.selectedPlants(event);
    this.dataService.selectedPlant.next(event);
   this.dataService.analyteSelected.next('NOx');
+
+
  
   }
 
@@ -30,24 +35,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.colorselect.onColorSelect(selection)
   }
 
-  onNavigate(event: any) {
-   
-     this.router.navigate(['/']);
-  }
+
 
   ngOnInit(): void {
+
+
     
   this.plantSubscription = this.dataService.selectedPlant.subscribe(
-
     (didActive) => {
       this.plantSelect.nativeElement.value = didActive
       this.selected = didActive
+      this.hide.nativeElement.style.opacity = 1
     }
   )
+
   
   }
 
 ngOnDestroy(): void {
   this.plantSubscription.unsubscribe
+  this.routeSub.unsubscribe
 }
 }

@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   onNavigate(selection: string) {
     if (selection !== 'none') {
       this.router.navigate(['/display']);
+      
       setTimeout(() => {
         this.dataservice.selectedPlants(selection);
         this.dataservice.analyteSelected.next('NOx');

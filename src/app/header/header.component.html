@@ -1,6 +1,9 @@
-<ul  class="nav ">
-  <li class="nav-item home" (click)="onNavigate($event)">Home</li>
-  <li class="nav-item color">
+<ul #ul class="nav ">
+
+  <li class="nav-item selected">{{selected}}</li>
+
+
+  <li class="nav-item pull-right color">
     <h4>Select a color scheme:</h4>
     <select name="colorSelect" id="colorSelect" #colorSelect (change)="onColorSelect(colorSelect.value)">
       <option value="mainmode">Main</option>
@@ -8,10 +11,11 @@
          <option value="rainbowmode">Rainbow</option>
     </select>
   </li>
-<li class="nav-item selected">{{selected}}</li>
+  
+
   <li class="nav-item pull-right info" appDropdown>
-    Select Plant:
-    <br>
+   <h4> Select Plant:</h4>
+
       <select name="plantSelect" id="plantSelect"  #plantSelect (change)="onPlantSelected(plantSelect.value)">   
        <option *ngFor="let prop of plant" >{{prop.name}}</option>
   </select>  

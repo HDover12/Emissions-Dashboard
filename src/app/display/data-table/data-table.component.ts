@@ -74,7 +74,8 @@ export class DataTableComponent implements OnInit {
       this.container.nativeElement.style.color =
         GlobalColors.colormode.fontcolor;
         this.total.nativeElement.style.background = 
-        GlobalColors.colormode.appbgcolor
+        GlobalColors.colormode.appbgcolor;
+        this.total.nativeElement.style.boxShadow = `0px 0px 0px 6px ${GlobalColors.colormode.componentbgcolor} inset`;
     }, 0);
 
     this.colorSelected = this.globalColors.colorSelected.subscribe((color) => {
@@ -85,6 +86,8 @@ export class DataTableComponent implements OnInit {
           GlobalColors.colormode.fontcolor;
            this.total.nativeElement.style.background =
              GlobalColors.colormode.appbgcolor;
+             this.total.nativeElement.style.boxShadow = `0px 0px 0px 6px ${GlobalColors.colormode.componentbgcolor} inset`;
+ 
 
               if (color == 'rainbowmode') {
                 this.total.nativeElement.style.animation =
