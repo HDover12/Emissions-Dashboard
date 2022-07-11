@@ -15,7 +15,10 @@ text-align: center;
 ul {
  margin: 0 auto;
 font-size: 18px;
-    width: fit-content;
+  width: fit-content;
+padding: 0;
+
+    list-style: none;
  }
 
 li {
@@ -24,9 +27,22 @@ li {
     box-shadow: 0px 0px 3px 1px darkgray;
     border-radius: 4px;
     text-align: center;
+    width: 70px;
+    height: 40px;
+    padding-top:  5px;
 }
 
 h4 {
     font-weight: bolder;
 }
 
+@media (max-width: 990px) {
+ 
+   li {
+    width: 60px;
+    display: inline-block;
+    margin: 0 2px;
+    padding: 2px;
+   }
+
+   }

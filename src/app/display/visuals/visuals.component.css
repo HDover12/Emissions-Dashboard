@@ -1,6 +1,6 @@
 .container {
     margin: 0 auto;
-    width: 80%;
+   width: 85%;
     height: 384px;
     background-color: var(--bgcolor);
     border-radius: 10px;
@@ -13,22 +13,24 @@
 }
 
 .chartcontain {
-width: 450px;
-left: 43%;
-   overflow: hidden;
-   position: absolute;
-   transform: translate(-50%, 0%);
-  height: 450px;
- top: -48px;
+    width: 450px;
+    overflow: hidden;
+    transform: translate(-5%, -10%);
+  
+     height: 450px;
+
  background-color: transparent;
 z-index: 1;
 }
+
+
 
 .circle {
     position: absolute;
     stroke: var(--bgcolor);
     stroke-width: 70px;
     stroke-dasharray: 641;
+    stroke-dashoffset: -641;
     fill: none;
     transform-origin: 50px 50px;
     transform: rotate(-90deg) translate(-335px, 25px) ;
@@ -43,3 +45,18 @@ z-index: 1;
     top: -70px;
 }
 
+
+@media (max-width: 700px) {
+ 
+  .container {
+    width: 100%
+  }
+
+  .chartcontain {
+    transform: translate(-19%, -20%) scale(.8);
+
+  }
+
+
+
+   }

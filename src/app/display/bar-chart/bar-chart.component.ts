@@ -3,6 +3,7 @@ import { PlotlyService } from 'angular-plotly.js';
 import { GlobalColors } from 'src/app/shared/globalcolors';
 import { DataService } from 'src/app/shared/data.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bar-chart',
@@ -13,7 +14,8 @@ export class BarChartComponent implements OnInit, OnDestroy {
   constructor(
     private plotlyService: PlotlyService,
     private dataService: DataService,
-    private globalColors: GlobalColors
+    private globalColors: GlobalColors,
+    private route: ActivatedRoute
   ) {}
   bgcolor = GlobalColors.colormode.chartbgcolor;
   coalcolor = GlobalColors.colormode.coalcolor;
@@ -26,7 +28,6 @@ export class BarChartComponent implements OnInit, OnDestroy {
   @ViewChild('barChart', { static: false }) barChart!: ElementRef;
   @ViewChild('container', { static: false }) container!: ElementRef;
 
-  private plantSelected!: Subscription;
   private colorSelected!: Subscription;
 
   ngOnInit(): void {
@@ -40,21 +41,27 @@ export class BarChartComponent implements OnInit, OnDestroy {
       }, 0);
     });
 
-    this.plantSelected = this.dataService.selectedPlant.subscribe(
-      (didActivate) => {
-        this.ngArray = [];
-        this.coalArray = [];
 
-        for (let prop of this.dataService.plants) {
-          if (prop.name == didActivate) {
-            this.ngArray = prop.ngQuarters;
-            this.coalArray = prop.coalQuarters;
-          }
-        }
+    this.route.firstChild?.params.subscribe(params=>{
+       this.ngArray = [];
+       this.coalArray = [];
 
-        this.drawChart(this.bgcolor, this.coalcolor, this.naturalgascolor, this.fontcolor);
-      }
-    );
+       for (let prop of this.dataService.plants) {
+         if (prop.name == params["plant"]) {
+           this.ngArray = prop.ngQuarters;
+           this.coalArray = prop.coalQuarters;
+         }
+       }
+
+       this.drawChart(
+         this.bgcolor,
+         this.coalcolor,
+         this.naturalgascolor,
+         this.fontcolor
+       );
+    
+    })
+
   }
 
   drawChart(bgcolor: string, coalcolor: string, ngcolor: string, fontcolor: string) {
@@ -140,7 +147,7 @@ export class BarChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.plantSelected.unsubscribe();
+ 
     this.colorSelected.unsubscribe();
   }
 }

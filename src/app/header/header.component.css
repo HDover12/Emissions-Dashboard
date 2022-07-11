@@ -11,7 +11,7 @@
   font-size: 42px;
   font-weight: bolder;
   height: 46px;
-
+margin-top: 10px;
 }
 
 #plantSelect {
@@ -41,7 +41,7 @@ margin: 0px;
 
 ul {
   height: 120px;
-opacity: 0;
+
 }
 
 #colorSelect {
@@ -50,5 +50,17 @@ opacity: 0;
   padding: 5px 10px;
   color: black;
   background-color: var(--bgcolor);
+  cursor: pointer;
+}
+
+.home {
+
+position: absolute;
+top: 4%;
+left: 1%;
+  z-index: 3;
+  color: white;
+  font-size: 18px;
+  text-decoration: underline;
   cursor: pointer;
 }

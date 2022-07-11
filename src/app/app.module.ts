@@ -20,11 +20,17 @@ import { BarChartComponent } from './display/bar-chart/bar-chart.component';
 
 
 
+
 PlotlyModule.plotlyjs = PlotlyJS;
 
 const appRoutes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'display', component: DisplayComponent, data: {url: ['display']}},
+  {path: "", component: HomeComponent},
+  {path: "display", 
+  component: DisplayComponent, 
+  children: [
+    {path: ":plant", component: DisplayComponent},
+]
+},
 ]
 
 @NgModule({

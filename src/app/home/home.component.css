@@ -11,3 +11,11 @@
 label {
     color: white;
 }
+
+
+.container {
+    padding-top: 18vh;
+    text-align: center;
+    padding-bottom: 18vh;
+    height: 50vh
+}

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fadeInAnimation } from '../shared/router-animations';
 
 @Component({
@@ -15,6 +15,9 @@ export class DisplayComponent implements OnInit {
 
   ngOnInit(): void {
   
+
+
+
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../shared/data.service';
 import { fadeInAnimation } from '../shared/router-animations';
@@ -13,15 +13,19 @@ import { fadeInAnimation } from '../shared/router-animations';
 export class HomeComponent implements OnInit {
   constructor(private router: Router, private dataservice: DataService) {}
 
+  @ViewChild('plantSelect') plantSelect!: string;
+
   onNavigate(selection: string) {
     if (selection !== 'none') {
-      this.router.navigate(['/display']);
+  
+      this.router.navigate(['/display', selection]);
+     
       
-      setTimeout(() => {
-        this.dataservice.selectedPlants(selection);
-        this.dataservice.analyteSelected.next('NOx');
-        this.dataservice.selectedPlant.next(selection);
-      }, 0);
+      // setTimeout(() => {
+      //   this.dataservice.selectedPlants(selection);
+      //   
+      //   this.dataservice.selectedPlant.next(selection);
+      // }, 0);
     }
   }
 

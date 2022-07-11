@@ -1,5 +1,5 @@
 <ul #ul class="nav ">
-
+     <li class="nav-item home" routerLink="/">Home</li>
   <li class="nav-item selected">{{selected}}</li>
 
 
@@ -16,7 +16,12 @@
   <li class="nav-item pull-right info" appDropdown>
    <h4> Select Plant:</h4>
 
-      <select name="plantSelect" id="plantSelect"  #plantSelect (change)="onPlantSelected(plantSelect.value)">   
+      <select 
+      name="plantSelect" 
+      id="plantSelect"  
+      #plantSelect 
+      (change)="onPlantSelected(plantSelect.value)" 
+      >   
        <option *ngFor="let prop of plant" >{{prop.name}}</option>
   </select>  
   </li>

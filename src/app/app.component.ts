@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { DataService } from './shared/data.service';
@@ -46,8 +46,9 @@ this.globalcolors = this.colorSelect.colorSelected.subscribe((color)=>{
 
   }
 
-  ngOnInit(): void {
-
+  ngOnInit() {
+     
+    
   
   }
 }

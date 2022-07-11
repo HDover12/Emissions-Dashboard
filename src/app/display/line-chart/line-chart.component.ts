@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PlotlyService } from 'angular-plotly.js';
 import { Subscription } from 'rxjs';
 import { Boiler } from 'src/app/shared/boiler.model';
@@ -16,7 +17,8 @@ export class LineChartComponent implements OnInit, OnDestroy {
   constructor(
     private plotlyService: PlotlyService,
     private dataService: DataService,
-    private globalColors: GlobalColors
+    private globalColors: GlobalColors,
+    private route: ActivatedRoute
   ) {}
 
   @ViewChild('container', { static: false }) container!: ElementRef;
@@ -69,16 +71,15 @@ export class LineChartComponent implements OnInit, OnDestroy {
       }, 0);
     });
 
-    this.plantSelected = this.dataService.selectedPlant.subscribe(
-      (didActivate) => {
-        this.boilerArray = this.dataService.displayArray;
-        this.dataArray = this.boilerArray[0].yearData;
-        this.onBoilerSelect(this.boilerArray[0].name);
-      }
-    );
+    this.route.firstChild?.params.subscribe(params=>{
+ this.boilerArray = this.dataService.displayArray;
+ this.dataArray = this.boilerArray[0].yearData;
+ this.onBoilerSelect(this.boilerArray[0].name);
+    })
+
   }
   ngOnDestroy(): void {
-    this.plantSelected.unsubscribe();
+ 
     this.colorSelected.unsubscribe();
   }
 

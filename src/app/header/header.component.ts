@@ -1,5 +1,5 @@
 import { ThisReceiver } from '@angular/compiler';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../shared/data.service';
@@ -10,25 +10,25 @@ import { GlobalColors } from '../shared/globalcolors';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private route: ActivatedRoute, private router: Router, private dataService: DataService, private colorselect: GlobalColors) {}
   plant = this.dataService.plants;
-  selected = this.dataService.selection;
+  selected!: string
   routeSub!: Subscription;
 
-  @ViewChild('plantSelect') plantSelect!: ElementRef;
-  @ViewChild('ul') hide!: ElementRef;
+  @ViewChild('plantSelect', {static: false}) plantSelect!: ElementRef;
+ 
   
   private plantSubscription!: Subscription; 
 
-  onPlantSelected(event: any){
-  this.dataService.selectedPlants(event);
-   this.dataService.selectedPlant.next(event);
-  this.dataService.analyteSelected.next('NOx');
-
-
- 
+  onPlantSelected(selection: any){
+     this.router.navigate(['/display', selection]);   
   }
+
+ ngAfterViewInit(): void {
+     this.plantSelect.nativeElement.value = this.selected
+ }
+  
 
   onColorSelect(selection: string){
     this.colorselect.colorSelected.next(selection)
@@ -38,22 +38,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
-
+  
+  this.route.firstChild?.params.subscribe(params=>{
+    this.selected = params['plant']
     
-  this.plantSubscription = this.dataService.selectedPlant.subscribe(
-    (didActive) => {
-      this.plantSelect.nativeElement.value = didActive
-      this.selected = didActive
-      this.hide.nativeElement.style.opacity = 1
-    }
-  )
+
+   
+  })
+   
+    
+
 
   
   }
 
 ngOnDestroy(): void {
-  this.plantSubscription.unsubscribe
-  this.routeSub.unsubscribe
+  
+
 }
 }

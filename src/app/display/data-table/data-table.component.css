@@ -1,6 +1,6 @@
 .container {
     background-color: var(--bgcolor);
-   width: 80%;
+   width: 85%;
     height: 384px;
     text-align: center;
     padding: 18px 0 0 0;
@@ -71,6 +71,10 @@ thead {
    
 }
 
+table>tbody>tr:hover {
+    background-color: lightgray;
+}
+
 
 
 tfoot {
@@ -85,3 +89,11 @@ position: sticky;
     50%{background-position:100% 19%}
     100%{background-position:0% 82%}
 }
+
+@media (max-width: 700px) {
+ 
+  .container {
+    width: 100%
+  }
+
+   }

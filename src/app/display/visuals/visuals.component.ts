@@ -5,6 +5,7 @@ import { chartAnimation } from '../../shared/piechart.animation';
 import { PlotlyService } from 'angular-plotly.js';
 import { GlobalColors } from 'src/app/shared/globalcolors';
 import { animate, state, style, transition, trigger, keyframes } from '@angular/animations';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-visuals',
@@ -37,29 +38,35 @@ export class VisualsComponent implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
     private plotlyService: PlotlyService,
-    private globaleColors: GlobalColors
+    private globaleColors: GlobalColors,
+    private route: ActivatedRoute
   ) {}
   natGas: number = 0;
   coal: number = 0;
   state = 'hidden';
-  chartState = 'start';
+  chartState = 'stop';
   bgcolor = GlobalColors.colormode.componentbgcolor;
   coalcolor = GlobalColors.colormode.coalcolor;
   naturalgascolor = GlobalColors.colormode.naturalgascolor;
   fontcolor = GlobalColors.colormode.fontcolor;
-  selectedAnalyte = '';
+  selectedAnalyte = 'NOx';
 
   @ViewChild('pieChart', { static: false }) pieChart!: ElementRef;
   @ViewChild('circle', { static: false }) circle!: ElementRef;
   @ViewChild('container', { static: false }) container!: ElementRef;
 
-  private plantSelected!: Subscription;
+
   private analyteSelected!: Subscription;
   private colorSelected!: Subscription;
 
-  animationEnded(event: any) {}
+
 
   ngOnInit(): void {
+
+  this.route.firstChild?.params.subscribe(params=>{
+  this.onBoilerSelected("NOx")
+    })
+
     this.colorSelected = this.globaleColors.colorSelected.subscribe(() => {
       setTimeout(() => {
         this.bgcolor = GlobalColors.colormode.chartbgcolor;

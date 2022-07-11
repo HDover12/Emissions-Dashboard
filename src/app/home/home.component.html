@@ -1,9 +1,14 @@
+<div class="container">
 <h1 class="welcome">Welcome to my sample dashboard!</h1>
 <h4 class="info">All data presented herein is for demonstration purposes only and does not reflect real emission values</h4>
 <label for="plantSelect">Please choose an example Plant:</label><br>
-<select #plantSelect (change)="onNavigate(plantSelect.value)" name="plantSelect" id="plantSelect">
+
+
+
+<select #plantSelect  (change)="onNavigate(plantSelect.value)" name="plantSelect" id="plantSelect">
     <option value="none">--Please Select a Plant--</option>
-    <option value="Plant A">Plant A</option>
+    <option value="Plant A"> Plant A</option>
     <option value="Plant B">Plant B</option>
     <option value="Plant C">Plant C</option>
-</select>
+ </select>
+ </div>
